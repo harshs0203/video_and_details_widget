@@ -19,10 +19,10 @@ class _VideoState extends State<Video> {
   void initState() {
     _chewieController = ChewieController(
       materialProgressColors: ChewieProgressColors(
-        backgroundColor: Colors.purple,
-        bufferedColor: Colors.purple,
-        handleColor: Colors.purple,
-        playedColor: Colors.purple,
+        backgroundColor: Color(0xffFF2E0680),
+        bufferedColor: Color(0xffFF2E0680),
+        handleColor: Color(0xffFF2E0680),
+        playedColor: Color(0xffFF2E0680),
       ),
         videoPlayerController: widget.videoPlayerController,
         aspectRatio: 1 / 1,

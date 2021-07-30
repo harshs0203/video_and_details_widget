@@ -27,7 +27,7 @@ class VideoWidget extends StatefulWidget {
 class _VideoWidgetState extends State<VideoWidget> {
   String product = 'watch';
   VideoPlayerController videoPlayerController =
-  VideoPlayerController.asset('video/apple.mp4');
+      VideoPlayerController.asset('video/apple.mp4');
 
   @override
   void initState() {
@@ -45,35 +45,45 @@ class _VideoWidgetState extends State<VideoWidget> {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.05,
           ),
-          Expanded(child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                top: 15.0,
-                left: 10.0,
-                right: 10.0,
-                bottom: 10.0,
-              ),
-              child: Column(
-                children: [
-                  ImageSlider(product: product),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.05,
-                  ),
-                  Text(
-                    'APPLE ' + product.toUpperCase(),
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.025,
-                  ),
-                  Details(product),
-                ],
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 15.0,
+                ),
+                child: Column(
+                  children: [
+                    ImageSlider(product: product),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.05,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.center,
+                              colors: [Color(0xffFF2E0680), Color(0xff1c2834)])),
+                      child: Column(
+                        children: [
+                          Text(
+                            'APPLE ' + product.toUpperCase(),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 30.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.025,
+                          ),
+                          Details(product),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),),
+          ),
         ],
       ),
     );
@@ -117,5 +127,3 @@ class VideoPlayer extends StatelessWidget {
     );
   }
 }
-
-

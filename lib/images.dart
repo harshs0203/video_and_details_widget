@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+
 class ImageSlider extends StatelessWidget {
   const ImageSlider({Key? key, required this.product}) : super(key: key);
 
@@ -23,9 +24,9 @@ class ImageSlider extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               margin: EdgeInsets.symmetric(horizontal: 10.0),
               decoration: BoxDecoration(
-                  color: Colors.purple,
+                  color: Color(0xffFF2E0680),
                 boxShadow: [BoxShadow(
-                color: Colors.purple,
+                color: Color(0xffFF2E0680),
                 blurRadius: 20.0,
               ),]
               ),
