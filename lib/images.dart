@@ -10,9 +10,9 @@ class ImageSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List images = [
-      'assets/$product/$product 1.jpg',
-      'assets/$product/$product 2.jpg',
-      'assets/$product/$product 3.jpg',
+      'assets/watch/watch 1.jpg',
+      'assets/ipad/ipad 1.jpg',
+      'assets/macbook/macbook 1.jpg',
     ];
 
     return Container(
@@ -27,7 +27,7 @@ class ImageSlider extends StatelessWidget {
                   color: Color(0xffFF2E0680),
                 boxShadow: [BoxShadow(
                 color: Color(0xffFF2E0680),
-                blurRadius: 20.0,
+                blurRadius: 5.0,
               ),]
               ),
               child: Image.asset(

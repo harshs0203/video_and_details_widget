@@ -3,6 +3,7 @@ import 'package:video_and_details_widget/images.dart';
 import 'package:video_player/video_player.dart';
 import 'videoplayer.dart';
 import 'package:flutter/services.dart' show rootBundle;
+
 void main() {
   runApp(MyApp());
 }
@@ -59,11 +60,7 @@ class _VideoWidgetState extends State<VideoWidget> {
                       height: MediaQuery.of(context).size.height * 0.05,
                     ),
                     Container(
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.center,
-                              colors: [Color(0xffFF2E0680), Color(0xff1c2834)])),
+                      padding: EdgeInsets.all(8.0),
                       child: Column(
                         children: [
                           Text(
@@ -76,9 +73,29 @@ class _VideoWidgetState extends State<VideoWidget> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.025,
                           ),
+                          Image.asset('assets/$product/$product 2.jpg'),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.025,
+                          ),
                           Text(
                             data,
-                            style: TextStyle(color: Colors.white, fontSize: 20.0),
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 20.0),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.025,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.5,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  fit: BoxFit.cover, image: AssetImage('assets/$product/$product 3.jpg')),
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(30.0),
+                                bottomRight: Radius.circular(30.0),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -135,7 +152,6 @@ class _VideoWidgetState extends State<VideoWidget> {
       });
     }
   }
-
 }
 
 class VideoPlayer extends StatelessWidget {
