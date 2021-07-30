@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:video_and_details_widget/details.dart';
 import 'package:video_and_details_widget/images.dart';
 import 'package:video_player/video_player.dart';
 import 'videoplayer.dart';
-
+import 'package:flutter/services.dart' show rootBundle;
 void main() {
   runApp(MyApp());
 }
@@ -26,12 +25,14 @@ class VideoWidget extends StatefulWidget {
 
 class _VideoWidgetState extends State<VideoWidget> {
   String product = 'watch';
+  String data = '';
   VideoPlayerController videoPlayerController =
       VideoPlayerController.asset('video/apple.mp4');
 
   @override
   void initState() {
     fetchingProduct();
+    fetchFileData();
     super.initState();
   }
 
@@ -42,9 +43,9 @@ class _VideoWidgetState extends State<VideoWidget> {
       body: Column(
         children: [
           VideoPlayer(videoPlayerController: videoPlayerController),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.05,
-          ),
+          // SizedBox(
+          //   height: MediaQuery.of(context).size.height * 0.05,
+          // ),
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
@@ -75,7 +76,10 @@ class _VideoWidgetState extends State<VideoWidget> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.025,
                           ),
-                          Details(product),
+                          Text(
+                            data,
+                            style: TextStyle(color: Colors.white, fontSize: 20.0),
+                          ),
                         ],
                       ),
                     ),
@@ -100,14 +104,38 @@ class _VideoWidgetState extends State<VideoWidget> {
       setState(() {
         if (videoPlayerController.value.position.inMinutes < 1) {
           product = 'watch';
+          fetchFileData();
         } else if (videoPlayerController.value.position.inMinutes < 2) {
           product = 'ipad';
+          fetchFileData();
         } else {
           product = 'macbook';
+          fetchFileData();
         }
       });
     });
   }
+
+  fetchFileData() async {
+    String responseText;
+    if (product == 'ipad') {
+      responseText = await rootBundle.loadString('details/ipad.txt');
+      setState(() {
+        data = responseText;
+      });
+    } else if (product == 'watch') {
+      responseText = await rootBundle.loadString('details/watch.txt');
+      setState(() {
+        data = responseText;
+      });
+    } else if (product == 'macbook') {
+      responseText = await rootBundle.loadString('details/macbook.txt');
+      setState(() {
+        data = responseText;
+      });
+    }
+  }
+
 }
 
 class VideoPlayer extends StatelessWidget {
