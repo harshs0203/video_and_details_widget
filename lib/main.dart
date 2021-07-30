@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:video_and_details_widget/details.dart';
+import 'package:video_and_details_widget/images.dart';
 import 'package:video_player/video_player.dart';
-import 'images.dart';
 import 'videoplayer.dart';
 
 void main() {
@@ -27,7 +27,7 @@ class VideoWidget extends StatefulWidget {
 class _VideoWidgetState extends State<VideoWidget> {
   String product = 'watch';
   VideoPlayerController videoPlayerController =
-  VideoPlayerController.asset('videos/apple.mp4');
+  VideoPlayerController.asset('video/apple.mp4');
 
   @override
   void initState() {
