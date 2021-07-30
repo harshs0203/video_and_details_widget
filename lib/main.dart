@@ -1,38 +1,121 @@
 import 'package:flutter/material.dart';
+import 'package:video_and_details_widget/details.dart';
+import 'package:video_player/video_player.dart';
+import 'images.dart';
+import 'videoplayer.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
+      debugShowCheckedModeBanner: false,
+      title: 'Video Detail Widget',
       home: VideoWidget(),
     );
   }
 }
 
-class VideoWidget extends StatelessWidget {
-  const VideoWidget({Key? key}) : super(key: key);
+class VideoWidget extends StatefulWidget {
+  @override
+  _VideoWidgetState createState() => _VideoWidgetState();
+}
+
+class _VideoWidgetState extends State<VideoWidget> {
+  String product = 'watch';
+  VideoPlayerController videoPlayerController =
+  VideoPlayerController.asset('videos/apple.mp4');
+
+  @override
+  void initState() {
+    fetchingProduct();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      backgroundColor: Color(0xff1c2834),
+      body: Column(
+        children: [
+          VideoPlayer(videoPlayerController: videoPlayerController),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.05,
+          ),
+          Expanded(child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 15.0,
+                left: 10.0,
+                right: 10.0,
+                bottom: 10.0,
+              ),
+              child: Column(
+                children: [
+                  ImageSlider(product: product),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.05,
+                  ),
+                  Text(
+                    'APPLE ' + product.toUpperCase(),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.025,
+                  ),
+                  Details(product),
+                ],
+              ),
+            ),
+          ),),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    videoPlayerController.dispose();
+    super.dispose();
+  }
+
+  fetchingProduct() {
+    videoPlayerController.addListener(() {
+      setState(() {
+        if (videoPlayerController.value.position.inMinutes < 1) {
+          product = 'watch';
+        } else if (videoPlayerController.value.position.inMinutes < 2) {
+          product = 'ipad';
+        } else {
+          product = 'macbook';
+        }
+      });
+    });
   }
 }
+
+class VideoPlayer extends StatelessWidget {
+  const VideoPlayer({
+    Key? key,
+    required this.videoPlayerController,
+  }) : super(key: key);
+
+  final VideoPlayerController videoPlayerController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.5,
+      width: MediaQuery.of(context).size.width,
+      child: Video(videoPlayerController: videoPlayerController),
+    );
+  }
+}
+
 
