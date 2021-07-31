@@ -1,43 +1,57 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:video_and_details_widget/main.dart';
+import 'package:video_and_details_widget/videoplayer.dart';
+
+class ImageSlider extends StatefulWidget {
+  ImageSlider({Key? key, this.product}) : super(key: key);
+
+  final product;
+
+  @override
+  ImageSliderState createState() => ImageSliderState(product);
+}
+
+class ImageSliderState extends State<ImageSlider> {
 
 
-class ImageSlider extends StatelessWidget {
-  const ImageSlider({Key? key, required this.product}) : super(key: key);
+  final product;
 
-  final String product ;
+  ImageSliderState(this.product);
 
   @override
   Widget build(BuildContext context) {
     List images = [
-      'assets/watch/watch 1.jpg',
-      'assets/ipad/ipad 1.jpg',
-      'assets/macbook/macbook 1.jpg',
+      'assets/$product/$product 1.jpg',
+      'assets/$product/$product 2.jpg',
+      'assets/$product/$product 3.jpg',
     ];
 
     return Container(
-      child: CarouselSlider(
-        options: CarouselOptions(height: MediaQuery.of(context).size.height * 0.25,),
-        items: images.map((imagePath) {
-          return Builder(builder: (BuildContext context) {
-            return Container(
-              width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.symmetric(horizontal: 10.0),
+      child: CarouselSlider.builder(
+        options: CarouselOptions(
+          height: MediaQuery.of(context).size.height * 0.25,
+        ),
+        itemCount: images.length,
+        itemBuilder: (BuildContext context, item, i) {
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.25,
+            width: MediaQuery.of(context).size.width,
+            margin: EdgeInsets.symmetric(horizontal: 10.0),
+            decoration: BoxDecoration(color: Color(0xff1c2834),
+            ),
+            child: Container(
               decoration: BoxDecoration(
-                  color: Color(0xffFF2E0680),
-                boxShadow: [BoxShadow(
-                color: Color(0xffFF2E0680),
-                blurRadius: 5.0,
-              ),]
+                image: DecorationImage(
+                    fit: BoxFit.fill, image: AssetImage(images[item])),
+                borderRadius: BorderRadius.circular((20.0),
+                ),
               ),
-              child: Image.asset(
-                imagePath,
-                fit: BoxFit.fill,
-              ),
-            );
-          });
-        }).toList(),
+            ),
+          );
+        },
       ),
     );
   }
+
 }

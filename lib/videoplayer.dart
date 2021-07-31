@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:chewie/chewie.dart';
+import 'package:video_and_details_widget/images.dart';
 import 'package:video_player/video_player.dart';
 
 class Video extends StatefulWidget {
-  final VideoPlayerController videoPlayerController;
-
-  const Video({Key? key, required this.videoPlayerController})
+  final  videoPlayerController;
+  const Video({Key? key, this.videoPlayerController, })
       : super(key: key);
 
   @override
@@ -43,7 +43,8 @@ class _VideoState extends State<Video> {
         decoration: BoxDecoration(
           color: Colors.black,
         ),
-        child: Chewie(controller: _chewieController));
+        child: Chewie(controller: _chewieController
+        ));
   }
 
   @override

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:video_and_details_widget/images.dart';
+import 'package:video_and_details_widget/ipad.dart';
+import 'package:video_and_details_widget/macbook.dart';
+import 'package:video_and_details_widget/watch.dart';
 import 'package:video_player/video_player.dart';
 import 'videoplayer.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
 void main() {
   runApp(MyApp());
@@ -30,10 +31,11 @@ class _VideoWidgetState extends State<VideoWidget> {
   VideoPlayerController videoPlayerController =
       VideoPlayerController.asset('video/apple.mp4');
 
+  final controller = PageController(initialPage: 0);
+
   @override
   void initState() {
-    fetchingProduct();
-    fetchFileData();
+    //fetchFileData();
     super.initState();
   }
 
@@ -44,66 +46,18 @@ class _VideoWidgetState extends State<VideoWidget> {
       body: Column(
         children: [
           VideoPlayer(videoPlayerController: videoPlayerController),
-          // SizedBox(
-          //   height: MediaQuery.of(context).size.height * 0.05,
-          // ),
           Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 15.0,
-                ),
-                child: Column(
-                  children: [
-                    ImageSlider(product: product),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            'APPLE ' + product.toUpperCase(),
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.025,
-                          ),
-                          Image.asset('assets/$product/$product 2.jpg'),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.025,
-                          ),
-                          Text(
-                            data,
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 20.0),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.025,
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.5,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  fit: BoxFit.cover, image: AssetImage('assets/$product/$product 3.jpg')),
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(30.0),
-                                bottomRight: Radius.circular(30.0),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            child: PageView(
+              onPageChanged: (itemIndex){
+                fetchingProduct(itemIndex);
+              },
+              controller: controller,
+              children: [
+                Watch(),
+                Ipad(),
+                Macbook(),
+              ],
+            )
           ),
         ],
       ),
@@ -116,43 +70,53 @@ class _VideoWidgetState extends State<VideoWidget> {
     super.dispose();
   }
 
-  fetchingProduct() {
-    videoPlayerController.addListener(() {
-      setState(() {
-        if (videoPlayerController.value.position.inMinutes < 1) {
-          product = 'watch';
-          fetchFileData();
-        } else if (videoPlayerController.value.position.inMinutes < 2) {
-          product = 'ipad';
-          fetchFileData();
-        } else {
-          product = 'macbook';
-          fetchFileData();
-        }
-      });
-    });
+  seekingPosition(){
+    if(product == 'watch'){
+      videoPlayerController.seekTo(Duration(minutes:  0));
+    }else if(product == 'ipad'){
+      videoPlayerController.seekTo(Duration(minutes:  1));
+    }else if(product == 'macbook'){
+      videoPlayerController.seekTo(Duration(minutes:  2));
+    }
   }
 
-  fetchFileData() async {
-    String responseText;
-    if (product == 'ipad') {
-      responseText = await rootBundle.loadString('details/ipad.txt');
+  fetchingProduct(int itemIndex){
+    if(itemIndex == 0){
       setState(() {
-        data = responseText;
+        product = 'watch';
+        seekingPosition();
       });
-    } else if (product == 'watch') {
-      responseText = await rootBundle.loadString('details/watch.txt');
+    }else if(itemIndex == 1){
       setState(() {
-        data = responseText;
+        product = 'ipad';
+        seekingPosition();
       });
-    } else if (product == 'macbook') {
-      responseText = await rootBundle.loadString('details/macbook.txt');
+    }else if(itemIndex == 2){
       setState(() {
-        data = responseText;
+        product = 'macbook';
+        seekingPosition();
       });
     }
   }
-}
+
+  // fetchingProduct() {
+  //   videoPlayerController.addListener(() {
+  //     setState(() {
+  //       if (videoPlayerController.value.position.inMinutes < 1) {
+  //         product = 'watch';
+  //         fetchFileData();
+  //       } else if (videoPlayerController.value.position.inMinutes < 2) {
+  //         product = 'ipad';
+  //         fetchFileData();
+  //       } else {
+  //         product = 'macbook';
+  //         fetchFileData();
+  //       }
+  //     });
+  //   });
+  // }
+
+ }
 
 class VideoPlayer extends StatelessWidget {
   const VideoPlayer({
