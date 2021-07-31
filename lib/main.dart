@@ -28,14 +28,16 @@ class VideoWidget extends StatefulWidget {
 class _VideoWidgetState extends State<VideoWidget> {
   String product = 'watch';
   String data = '';
+  var itemIndex = 0;
   VideoPlayerController videoPlayerController =
       VideoPlayerController.asset('video/apple.mp4');
 
   final controller = PageController(initialPage: 0);
 
+
   @override
   void initState() {
-    //fetchFileData();
+    changingVideoAccordingToUI();
     super.initState();
   }
 
@@ -48,8 +50,11 @@ class _VideoWidgetState extends State<VideoWidget> {
           VideoPlayer(videoPlayerController: videoPlayerController),
           Expanded(
             child: PageView(
-              onPageChanged: (itemIndex){
-                fetchingProduct(itemIndex);
+              onPageChanged: (i){
+                setState(() {
+                  itemIndex = i;
+                });
+                fetchingProduct();
               },
               controller: controller,
               children: [
@@ -80,7 +85,7 @@ class _VideoWidgetState extends State<VideoWidget> {
     }
   }
 
-  fetchingProduct(int itemIndex){
+  fetchingProduct(){
     if(itemIndex == 0){
       setState(() {
         product = 'watch';
@@ -99,23 +104,17 @@ class _VideoWidgetState extends State<VideoWidget> {
     }
   }
 
-  // fetchingProduct() {
-  //   videoPlayerController.addListener(() {
-  //     setState(() {
-  //       if (videoPlayerController.value.position.inMinutes < 1) {
-  //         product = 'watch';
-  //         fetchFileData();
-  //       } else if (videoPlayerController.value.position.inMinutes < 2) {
-  //         product = 'ipad';
-  //         fetchFileData();
-  //       } else {
-  //         product = 'macbook';
-  //         fetchFileData();
-  //       }
-  //     });
-  //   });
-  // }
-
+  changingVideoAccordingToUI() {
+    videoPlayerController.addListener(() {
+        if (videoPlayerController.value.position.inMinutes < 1) {
+          controller.animateToPage(0, duration: Duration(milliseconds: 200),curve: Curves.easeIn);
+        } else if (videoPlayerController.value.position.inMinutes < 2) {
+          controller.animateToPage(1, duration: Duration(milliseconds: 200),curve: Curves.easeIn);
+        } else {
+          controller.animateToPage(2, duration: Duration(milliseconds: 200),curve: Curves.easeIn);
+        }
+      });
+  }
  }
 
 class VideoPlayer extends StatelessWidget {
